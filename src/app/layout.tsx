@@ -1,6 +1,7 @@
 import RightBar from "@/components/RightBar";
 import "./globals.css";
 import LeftBar from "@/components/LeftBar";
+import { ImageKitProvider } from '@imagekit/next';
 
 export default function RootLayout({
   children,
@@ -10,6 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body >
+        <ImageKitProvider urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!}>
         <div className="flex justify-between mx-auto max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl xxl:max-w-screen-xxl">
           <div className="px-2 xsm:px-4 xxl:px-8 h-screen">
             <LeftBar />
@@ -19,6 +21,7 @@ export default function RootLayout({
             <RightBar />
           </div>
         </div>
+        </ImageKitProvider>
       </body>
     </html>
   );
