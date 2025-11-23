@@ -1,5 +1,15 @@
+"use client"
 import Image from '@/components/Image'
+import { useState } from 'react'
 const Share = () => {
+  const [media, setMedia] = useState<File | null>(null)
+
+  const handleMediaChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    if(e.target.files && e.target.files[0]){
+      setMedia(e.target.files[0])
+    }
+  }
+  
   return (
     <div className='p-4 flex gap-4'>
       {/* AVATAR */}
@@ -11,7 +21,10 @@ const Share = () => {
         <input type="text" placeholder='What is happening?!' className='bg-transparent outline-none placeholder:text-textGray text-xl'/>
         <div className='flex items-center justify-between gap-4 flex-wrap'>
           <div className='flex gap-4 flex-wrap'>
-            <Image path='icons/image.svg' alt='' w={20} h={20} tr={true} className='cursor-pointer'/>
+            <input type="file" onChange={handleMediaChange} className='hidden' id='file'/>
+            <label htmlFor="file">
+              <Image path='icons/image.svg' alt='' w={20} h={20} tr={true} className='cursor-pointer'/>
+            </label>
             <Image path='icons/gif.svg' alt='' w={20} h={20} tr={true} className='cursor-pointer'/>
             <Image path='icons/poll.svg' alt='' w={20} h={20} tr={true} className='cursor-pointer'/>
             <Image path='icons/emoji.svg' alt='' w={20} h={20} tr={true} className='cursor-pointer'/>
@@ -25,4 +38,4 @@ const Share = () => {
   )
 }
 
-export default Share
+export default Share                        
