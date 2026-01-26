@@ -2,7 +2,7 @@ import Image from '@/components/Image'
 import PostInfo from './PostInfo'
 import PostInteraction from './PostInteraction'
 
-const Post = () => {
+const Post = async() => {
   return (
     <div className="p-4 border-y-[1px] border-borderGray">
       {/* Post type */}
