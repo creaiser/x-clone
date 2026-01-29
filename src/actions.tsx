@@ -1,14 +1,7 @@
 "use server"
 
-// ВАЖНО: Используем серверный пакет imagekit, а не @imagekit/next
-const ImageKit = require("imagekit")
+import { imagekit } from "./utils";
 
-// Инициализируем серверный ImageKit SDK
-const imagekit = new ImageKit({
-  publicKey: process.env.PUBLIC_KEY as string,
-  privateKey: process.env.PRIVATE_KEY as string,
-  urlEndpoint: process.env.PUBLIC_IMAGEKIT_URL_ENDPOINT as string, // например: https://ik.imagekit.io/your_imagekit_id
-})
 
 export const shareAction = async (formData: FormData, settings:{type: 'original' | 'wide' | 'square';sensitive: boolean}): Promise<void> => {
   const file = formData.get('file') as File

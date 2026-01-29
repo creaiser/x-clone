@@ -33,9 +33,9 @@ const Share = () => {
       </div>
       {/* OTHERS */}
       <div className='flex-1 flex flex-col gap-4'>
-        <input type="text" name='desc' placeholder='What is happening?!' className='bg-transparent outline-none placeholder:text-textGray text-xl'/>
+        <input type="text" name='desc' placeholder='What is happening?!' className='bg-transparent outline-none placeholder:text-textGray text-xl' accept='image/*, video/*'/>
         {/* MEDIA PREVIEW */}
-        {
+        {media?.type.includes("image") &&
           previewURL && (
             <div className='relative rounded-xl overflow-hidden'>
               <NextImage src={previewURL} alt='media preview' width={600} height={600} className={`w-full ${
@@ -47,8 +47,17 @@ const Share = () => {
               <div className="absolute top-2 left-2 bg-black/50 text-white px-4 py-1 rounded-full font-bold text-sm cursor-pointer" onClick={()=>setIsEditing(true)}>
                 Edit
               </div>
+              <div className='absolute top-2 right-2 bg-black/50 text-white h-8 w-8 flex items-center justify-center rounded-full cursor-pointer text-sm' onClick={()=>setMedia(null)}>X</div>
             </div>
           )
+        }{media?.type.includes("video") &&
+          previewURL && (
+            <div className='relative'>
+              <video src={previewURL}  controls className='rounded-xl'></video>
+              <div className='absolute top-2 right-2 bg-black/50 text-white h-8 w-8 flex items-center justify-center rounded-full cursor-pointer text-sm' onClick={()=>setMedia(null)}>X</div>
+            </div>
+          )
+
         }
         {
           isEditing && previewURL && (
