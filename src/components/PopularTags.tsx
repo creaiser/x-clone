@@ -7,7 +7,7 @@ const PopularTags = () => {
           <h1 className="text-xl fond-bold text-textGrayLight">{"What's"} Happening?</h1>
 
           {/*TREND EVENT*/}
-          <div className="flex gap-4 ">
+          {/* <div className="flex gap-4 ">
             <div className="relative w-20 h-20 rounded-xl overflow-hidden">
               <Image path="general/event.png" alt="event" w={120} h={120} tr={true}/>
               </div>
@@ -15,7 +15,7 @@ const PopularTags = () => {
               <h2 className='font-bold text-textGrayLight'>Nadal vs Federer Grand Slam</h2>
               <span className='text-sm text-textGray '>Last Night</span>
             </div>
-          </div>
+          </div> */}
 
 
           {/*TOPICS*/}

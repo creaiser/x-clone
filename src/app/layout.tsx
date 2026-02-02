@@ -10,17 +10,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body >
+      <body>
         <ImageKitProvider urlEndpoint={process.env.PUBLIC_IMAGEKIT_URL_ENDPOINT!}>
-        <div className="flex justify-between mx-auto max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl xxl:max-w-screen-xxl">
-          <div className="px-2 xsm:px-4 xxl:px-8 h-screen">
-            <LeftBar />
+          <div className="max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl xxl:max-w-screen-xxl mx-auto flex relative">
+            {/* Left Bar - Fixed */}
+            <div className="w-[69px] sm:w-[89px] lg:w-[69px] xl:w-[89px]  xxl:w-[277px] shrink-0">
+              <LeftBar />
+            </div>
+            
+            {/* Main Content */}
+            <div className="flex-1 lg:max-w-[600px]  border-borderGray">
+              {children}
+            </div>
+            
+            {/* Right Bar - Fixed */}
+            <div className="hidden lg:block  w-[290px] xl:w-[350px] shrink-0">
+              <RightBar />
+            </div>
           </div>
-          <div className="flex-1 lg:min-w-[600px] border-x-[1px] border-borderGray h-screen">{children}</div>
-          <div className="hidden lg:flex ml-4 md:ml-8 flex-1 h-screen">
-            <RightBar />
-          </div>
-        </div>
         </ImageKitProvider>
       </body>
     </html>

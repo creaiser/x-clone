@@ -66,24 +66,26 @@ const menuList = [
 
 const LeftBar = () => {
     return (
-        <div className="h-screen sticky top-0 flex flex-col justify-between pt-2 pb-8">  
+        <div className="fixed top-0 border-r-[1px] border-borderGray mx-auto h-screen flex flex-col  justify-between pt-2 pb-8
+        w-[68px] sm:w-[89px] lg:w-[69px] xl:w-[89px] xxl:w-[277px]
+        px-[4px] sm:px-[8px] lg:px-[4px] xl:px-[8px]">  
             {/* Logo menu button */}
-            <div className="flex flex-col gap-4 text-lg items-center xxl:left">  
+            <div className="flex flex-col gap-4 text-lg items-center xxl:items-start">  
                 {/* Logo */}
-                <Link href="/" className="p-2 rounded-full hover:bg-[#181818">
+                <Link href="/" className="py-2 px-4  rounded-full hover:bg-[#181818]">
                     <Image path="/icons/logo.svg" alt="logo" w={24} h={24} />
                 </Link>
                 {/* Menu list */}
                 <div className="flex flex-col gap-4">
                     {menuList.map(item=>(
-                        <Link href={item.link} className="p-2 rounded-full hover:bg-[#181818] flex items-center gap-4" key={item.id}>
+                        <Link href={item.link} className="py-2 px-4 rounded-full hover:bg-[#181818] flex items-center gap-4" key={item.id}>
                             <Image path={`/icons/${item.icon}`} alt={item.name} w={24} h={24} />
-                            <span  className="hidden xxl:inline">{item.name}</span>
+                            <span className="hidden xxl:inline">{item.name}</span>
                         </Link>
                     ))}
                 </div>
                 {/* Button */}
-                <Link href="/" className=" bg-white text-black rounded-full font-bold w-12 h-12 flex items-center justify-center xxl:hidden">
+                <Link href="/" className="bg-white text-black rounded-full font-bold w-12 h-12 flex items-center justify-center xxl:hidden">
                     <Image path="/icons/post.svg" alt="new post" w={24} h={24}/>
                 </Link>
                 <Link href="/" className="hidden xxl:block bg-white text-black rounded-full font-bold py-2 px-20">
@@ -91,7 +93,7 @@ const LeftBar = () => {
                 </Link>
             </div>
             {/* User */}
-            <div className="flex items-center justify-between">  
+            <div className="flex items-center justify-between py-2 px-4 ">  
                 <div className="flex items-center gap-2">  
                     <div className="w-10 h-10 relative rounded-full overflow-hidden">  
                         <Image path="/general/avatar.png" alt="creaiser" w={100} h={100} tr={true}/>

@@ -28,7 +28,7 @@ const Post = async() => {
   const fileDetails = await getFileDetails("697cf9f45c7cd75eb888bf17")
   console.log(fileDetails)
   return (
-    <div className="p-4 border-y-[1px] border-borderGray">
+    <div className=" px-6 py-4 xxl:p-4 border-y-[1px] border-borderGray">
       {/* Post type */}
       <div className="flex items-center gap-2 text-sm text-textGray mb-2 font-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">

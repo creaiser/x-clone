@@ -2,7 +2,8 @@ import Link from "next/link";
 import Image from './Image'
 
 const Recommendations = () => (
-    <div className="p-4 rounded-2xl border-[1px] border-borderGray flex flex-col gap-4">
+    <div className="p-4 rounded-2xl border-[1px] border-borderGray flex flex-col gap-4 ">
+        <h1 className="text-xl fond-bold text-textGrayLight">Who to follow</h1>
         {/* USER CARD */}
         <div className="flex items-center justify-between">
             {/* Image and user info */}
