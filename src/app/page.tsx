@@ -1,5 +1,4 @@
 import Link from 'next/link'
-
 import Feed from '@/components/Feed'
 import Share from '@/components/Share'
 
