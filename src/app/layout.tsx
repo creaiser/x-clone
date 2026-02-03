@@ -5,14 +5,23 @@ import { ImageKitProvider } from '@imagekit/next';
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body>
         <ImageKitProvider urlEndpoint={process.env.PUBLIC_IMAGEKIT_URL_ENDPOINT!}>
+          {/* MODAL POST CREATING  */}
+          <div>
+            {modal}
+          </div>
+          
+
           <div className="max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl xxl:max-w-screen-xxl mx-auto flex relative">
+            
             {/* Left Bar - Fixed */}
             <div className="w-[69px] sm:w-[89px] lg:w-[69px] xl:w-[89px]  xxl:w-[277px] shrink-0">
               <LeftBar />
