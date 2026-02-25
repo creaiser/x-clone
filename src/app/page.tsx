@@ -2,8 +2,9 @@ import Link from 'next/link'
 import Feed from '@/components/Feed'
 import Share from '@/components/Share'
 
-
 const Homepage = () => {
+
+
   return (
     <div className='relative w-[600px] h-[600px] '>
       <div className='px-4 pt-4 flex justify-between text-textGray font-bold border-b-[1px] border-borderGray'>
