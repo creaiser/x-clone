@@ -15,19 +15,19 @@ interface FileDetailsResponse{
    
 }
 
-const Post = async({type}:{type?:"status" | "comment"}) => {
+const Post = ({type}:{type?:"status" | "comment"}) => {
 
-  const getFileDetails = async (fileID: string):Promise<FileDetailsResponse> => {
-    return new Promise ((resolve, reject) =>{
-      imagekit.getFileDetails(fileID, function(error, result){
-        if (error) reject(error);
-        else resolve(result as FileDetailsResponse);
-      });
-    })
-  };
+  // const getFileDetails = async (fileID: string):Promise<FileDetailsResponse> => {
+  //   return new Promise ((resolve, reject) =>{
+  //     imagekit.getFileDetails(fileID, function(error, result){
+  //       if (error) reject(error);
+  //       else resolve(result as FileDetailsResponse);
+  //     });
+  //   })
+  // };
 
-  const fileDetails = await getFileDetails("697cf9f45c7cd75eb888bf17")
-  console.log(fileDetails)
+  // const fileDetails = await getFileDetails("697cf9f45c7cd75eb888bf17")
+  // console.log(fileDetails)
   return (
     <div className=" px-6 py-4 xxl:p-4 border-y-[1px] border-borderGray">
       {/* Post type */}
@@ -66,8 +66,8 @@ const Post = async({type}:{type?:"status" | "comment"}) => {
             <Link href="/creaiser/status/143">
               <p className={`mb-4 mt-2 ${type==="status" && "text-lg"}`}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
             </Link>
-            {/* <Image path="general/post.jpeg" alt="post" w={600} h={600} tr={true}/> */}
-            {fileDetails && fileDetails.fileType === "image" ?(
+            <Image path="general/post.jpeg" alt="post" w={600} h={600} tr={true}/>
+            {/* {fileDetails && fileDetails.fileType === "image" ?(
               <Image 
                 path={fileDetails.filePath} 
                 alt="" 
@@ -76,7 +76,7 @@ const Post = async({type}:{type?:"status" | "comment"}) => {
                 className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""}
                 />
             ) : <Video path={fileDetails.filePath}  className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""}/>}
-            
+             */}
             {type==="status" &&  <div className="my-2 text-textGray"><span>6:49 PM · Feb 3, 2026</span></div>}
             <div className={`${type==="status" && "border-t-1 border-borderGray pt-1"}`}>
               <PostInteraction/>
