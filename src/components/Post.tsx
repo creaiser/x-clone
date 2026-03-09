@@ -70,7 +70,7 @@ const Post = ({
                 className={`${type === 'status' && 'hidden'}relative w-10 h-10 rounded-full overflow-hidden`}
               >
                 <Image
-                  path={originalPost.user.img || '/general/noAvatarimg.png'}
+                  path={originalPost.user.img || '/general/noAvotar.png'}
                   alt=""
                   w={100}
                   h={100}

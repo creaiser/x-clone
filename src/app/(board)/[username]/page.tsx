@@ -3,12 +3,19 @@ import Image from '@/components/Image'
 import Feed from '@/components/Feed'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/prisma'
+import { auth } from '@clerk/nextjs/server'
+import FollowButton from '@/components/FollowButton'
 
 const UserPage = async ({ params }: { params: { username: string } }) => {
+  const { userId } = await auth()
   const user = await prisma.user.findUnique({
     where: { username: params.username },
+    include: {
+      _count: { select: { followers: true, followings: true } },
+      followings: userId ? { where: { followerId: userId } } : undefined,
+    },
   })
-  if (!user) return notFound
+  if (!user) return notFound()
   return (
     <div>
       {/* PROFILE TITLE */}
@@ -16,7 +23,7 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
         <Link href="/">
           <Image path="icons/back.svg" alt="back" w={24} h={24} />
         </Link>
-        <h1 className="font-bold text-lg">Lama Dev</h1>
+        <h1 className="font-bold text-lg">{user.displayName}</h1>
       </div>
       {/* INFO  */}
       <div className="">
@@ -25,7 +32,7 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
           {/* COVER */}
           <div className="w-full aspect-[3/1] relative">
             <Image
-              path="general/noCover.png"
+              path={user.cover || 'general/noCover.png'}
               alt="cover"
               w={600}
               h={200}
@@ -35,7 +42,7 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
           {/* AVATAR */}
           <div className="w-1/6 aspect-square rounded-full overflow-hidden border-4 border-black absolute left-4 -translate-y-1/2">
             <Image
-              path="general/avatar.png"
+              path={user.cover || 'general/noAvotar.png'}
               alt="cover"
               w={100}
               h={100}
@@ -65,42 +72,53 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
               tr={true}
             />
           </div>
-          <button className="py-2 px-4 bg-white text-black font-bold rounded-full">
-            Follow
-          </button>
+          {userId && (
+            <FollowButton
+              userId={user.id}
+              isFollowed={!!user.followings.length}
+            />
+          )}
         </div>
         {/* USER DETAILS  */}
         <div className="p-4 flex flex-col gap-2">
           {/* USERNAME & HANDLE  */}
           <div className="">
-            <h1 className="text-xl font-bold">Creaiser</h1>
-            <span className="text-textGray text-sm">@creaiser</span>
+            <h1 className="text-xl font-bold">{user.displayName}</h1>
+            <span className="text-textGray text-sm">{user.username}</span>
           </div>
-          <p>dev, web3 enthusiast👩‍💻</p>
+          {user.bio && <p>{user.bio}</p>}
           {/* JOB & LOCATION & DATE */}
           <div className="flex gap-4 text-textGray text-[15px]">
-            <div className="flex items-center gap-2">
-              <Image
-                path="icons/userLocation.svg"
-                alt="userLocation"
-                w={20}
-                h={20}
-                tr={true}
-              />
-              <span>Russia</span>
-            </div>
+            {user.location && (
+              <div className="flex items-center gap-2">
+                <Image
+                  path="icons/userLocation.svg"
+                  alt="userLocation"
+                  w={20}
+                  h={20}
+                  tr={true}
+                />
+                <span>{user.location}</span>
+              </div>
+            )}
             <div className="flex items-center gap-2">
               <Image path="icons/date.svg" alt="date" w={20} h={20} tr={true} />
-              <span>Joined November 2006</span>
+              <span>
+                Joined{' '}
+                {new Date(user.createdAt.toString()).toLocaleDateString(
+                  'en-US',
+                  { month: 'long', year: 'numeric' },
+                )}
+              </span>
             </div>
           </div>
           <div className="flex gap-4">
             <div className="flex items-center gap-2 cursor-pointer max-h-[18px] border-b-1 border-b-white/0 hover:border-b-white/100">
-              <span className="font-bold">10</span>
+              <span className="font-bold">{user._count.followers}</span>
               <span className="text-textGray text-[15px]">Followings</span>
             </div>
             <div className="flex items-center gap-2 cursor-pointer max-h-[18px] border-b-1 border-b-white/0 hover:border-b-white/100">
-              <span className="font-bold">130</span>
+              <span className="font-bold">{user._count.followings}</span>
               <span className="text-textGray text-[15px]">Followers</span>
             </div>
           </div>

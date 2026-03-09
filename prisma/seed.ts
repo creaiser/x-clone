@@ -1,22 +1,21 @@
-import { PrismaClient } from "../src/generated/prisma/client";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaClient } from '../src/generated/client'
+import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 
 declare global {
-  var prisma: PrismaClient | undefined;
+  var prisma: PrismaClient | undefined
 }
 
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL!);
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL!)
 
-export const prisma = global.prisma || new PrismaClient({ adapter });
+export const prisma = global.prisma || new PrismaClient({ adapter })
 
-if (process.env.NODE_ENV !== "production") {
-  global.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma
 }
-
 
 async function main() {
   // Create 5 users with unique details
-  const users = [];
+  const users = []
   for (let i = 1; i <= 5; i++) {
     const user = await prisma.user.create({
       data: {
@@ -29,13 +28,13 @@ async function main() {
         job: `Developer`,
         website: `google.com`,
       },
-    });
-    users.push(user);
+    })
+    users.push(user)
   }
-  console.log(`${users.length} users created.`);
+  console.log(`${users.length} users created.`)
 
   // Create 5 posts for each user
-  const posts = [];
+  const posts = []
   for (let i = 0; i < users.length; i++) {
     for (let j = 1; j <= 5; j++) {
       const post = await prisma.post.create({
@@ -43,11 +42,11 @@ async function main() {
           desc: `Post ${j} by ${users[i].username}`,
           userId: users[i].id,
         },
-      });
-      posts.push(post);
+      })
+      posts.push(post)
     }
   }
-  console.log('Posts created.');
+  console.log('Posts created.')
 
   // Create some follows
   await prisma.follow.createMany({
@@ -58,8 +57,8 @@ async function main() {
       { followerId: users[2].id, followingId: users[4].id },
       { followerId: users[3].id, followingId: users[0].id },
     ],
-  });
-  console.log('Follows created.');
+  })
+  console.log('Follows created.')
 
   // Create some likes
   await prisma.like.createMany({
@@ -70,11 +69,11 @@ async function main() {
       { userId: users[3].id, postId: posts[3].id },
       { userId: users[4].id, postId: posts[4].id },
     ],
-  });
-  console.log('Likes created.');
+  })
+  console.log('Likes created.')
 
   // Create some comments (each comment is a post linked to a parent post)
-  const comments = [];
+  const comments = []
   for (let i = 0; i < posts.length; i++) {
     const comment = await prisma.post.create({
       data: {
@@ -82,13 +81,13 @@ async function main() {
         userId: users[(i + 1) % 5].id,
         parentPostId: posts[i].id, // Linking the comment to the post
       },
-    });
-    comments.push(comment);
+    })
+    comments.push(comment)
   }
-  console.log('Comments created.');
+  console.log('Comments created.')
 
   // Create reposts using the Post model's rePostId
-  const reposts = [];
+  const reposts = []
   for (let i = 0; i < posts.length; i++) {
     const repost = await prisma.post.create({
       data: {
@@ -96,10 +95,10 @@ async function main() {
         userId: users[(i + 2) % 5].id, // The user who is reposting
         rePostId: posts[i].id, // Linking to the original post being reposted
       },
-    });
-    reposts.push(repost);
+    })
+    reposts.push(repost)
   }
-  console.log('Reposts created.');
+  console.log('Reposts created.')
 
   // Create saved posts (users save posts they like)
   await prisma.savedPosts.createMany({
@@ -110,16 +109,16 @@ async function main() {
       { userId: users[3].id, postId: posts[4].id },
       { userId: users[4].id, postId: posts[0].id },
     ],
-  });
-  console.log('Saved posts created.');
+  })
+  console.log('Saved posts created.')
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   })
   .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
