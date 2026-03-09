@@ -1,14 +1,14 @@
-import Link from "next/link";
+import Link from 'next/link'
 import Image from '@/components/Image'
-import Feed from "@/components/Feed";
-import { notFound } from "next/navigation";
-import {prisma} from "@/prisma"
+import Feed from '@/components/Feed'
+import { notFound } from 'next/navigation'
+import { prisma } from '@/prisma'
 
 const UserPage = async ({ params }: { params: { username: string } }) => {
   const user = await prisma.user.findUnique({
-    where:{username:params.username}
+    where: { username: params.username },
   })
-  if(!user) return notFound
+  if (!user) return notFound
   return (
     <div>
       {/* PROFILE TITLE */}
@@ -24,11 +24,23 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
         <div className="relative w-full ">
           {/* COVER */}
           <div className="w-full aspect-[3/1] relative">
-            <Image path="general/cover.jpg" alt="cover" w={600} h={200} tr={true} />
+            <Image
+              path="general/noCover.png"
+              alt="cover"
+              w={600}
+              h={200}
+              tr={true}
+            />
           </div>
           {/* AVATAR */}
           <div className="w-1/6 aspect-square rounded-full overflow-hidden border-4 border-black absolute left-4 -translate-y-1/2">
-            <Image path="general/avatar.png" alt="cover" w={100} h={100} tr={true} />
+            <Image
+              path="general/avatar.png"
+              alt="cover"
+              w={100}
+              h={100}
+              tr={true}
+            />
           </div>
         </div>
         <div className="flex w-full items-center justify-end gap-2 p-2">
@@ -36,12 +48,26 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
             <Image path="icons/more.svg" alt="more" w={20} h={20} tr={true} />
           </div>
           <div className="flex items-center w-9 h-9 justify-center rounded-full border-[1px] border-gray-500 cursor-pointer">
-            <Image path="icons/explore.svg" alt="explore" w={20} h={20} tr={true} />
+            <Image
+              path="icons/explore.svg"
+              alt="explore"
+              w={20}
+              h={20}
+              tr={true}
+            />
           </div>
           <div className="flex items-center w-9 h-9 justify-center rounded-full border-[1px] border-gray-500 cursor-pointer">
-            <Image path="icons/message.svg" alt="message" w={20} h={20} tr={true} />
+            <Image
+              path="icons/message.svg"
+              alt="message"
+              w={20}
+              h={20}
+              tr={true}
+            />
           </div>
-          <button className="py-2 px-4 bg-white text-black font-bold rounded-full">Follow</button>
+          <button className="py-2 px-4 bg-white text-black font-bold rounded-full">
+            Follow
+          </button>
         </div>
         {/* USER DETAILS  */}
         <div className="p-4 flex flex-col gap-2">
@@ -54,7 +80,13 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
           {/* JOB & LOCATION & DATE */}
           <div className="flex gap-4 text-textGray text-[15px]">
             <div className="flex items-center gap-2">
-              <Image path="icons/userLocation.svg" alt="userLocation" w={20} h={20} tr={true} />
+              <Image
+                path="icons/userLocation.svg"
+                alt="userLocation"
+                w={20}
+                h={20}
+                tr={true}
+              />
               <span>Russia</span>
             </div>
             <div className="flex items-center gap-2">
@@ -67,16 +99,16 @@ const UserPage = async ({ params }: { params: { username: string } }) => {
               <span className="font-bold">10</span>
               <span className="text-textGray text-[15px]">Followings</span>
             </div>
-             <div className="flex items-center gap-2 cursor-pointer max-h-[18px] border-b-1 border-b-white/0 hover:border-b-white/100">
+            <div className="flex items-center gap-2 cursor-pointer max-h-[18px] border-b-1 border-b-white/0 hover:border-b-white/100">
               <span className="font-bold">130</span>
               <span className="text-textGray text-[15px]">Followers</span>
             </div>
           </div>
         </div>
       </div>
-      <Feed userProfileId={user.id}/>
+      <Feed userProfileId={user.id} />
     </div>
-  );
+  )
 }
 
-export default UserPage;
+export default UserPage

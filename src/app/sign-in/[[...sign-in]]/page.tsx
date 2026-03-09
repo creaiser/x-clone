@@ -1,10 +1,10 @@
-"use client"
+'use client'
 import * as Clerk from '@clerk/elements/common'
 import * as SignIn from '@clerk/elements/sign-in'
 import Link from 'next/link'
 
 export default function SignInPage() {
-  return(
+  return (
     <div className="h-screen flex items-center justify-between p-8">
       <div className="hidden lg:flex w-1/2 items-center justify-center">
         <svg
@@ -20,10 +20,15 @@ export default function SignInPage() {
         </svg>
       </div>
       <div className="w-full items-center lg:items-start lg:w-1/2 flex flex-col gap-4">
-        <h1 className="text-2xl xsm:text-4xl md:text-6xl font-bold">Sign in to your account</h1>
+        <h1 className="text-2xl xsm:text-4xl md:text-6xl font-bold">
+          Sign in to your account
+        </h1>
         <h1 className="text-2xl">Join today.</h1>
         <SignIn.Root>
-          <Clerk.Connection name="google" className="bg-white rounded-full p-2 text-black w-72 flex items-center justify-center gap-2 font-bold cursor-pointer">
+          <Clerk.Connection
+            name="google"
+            className="bg-white rounded-full p-2 text-black w-72 flex items-center justify-center gap-2 font-bold cursor-pointer"
+          >
             <svg viewBox="0 0 24 24" width={24} height={24}>
               <path
                 d="M18.977 4.322L16 7.3c-1.023-.838-2.326-1.35-3.768-1.35-2.69 0-4.95 1.73-5.74 4.152l-3.44-2.635c1.656-3.387 5.134-5.705 9.18-5.705 2.605 0 4.93.977 6.745 2.56z"
@@ -44,7 +49,10 @@ export default function SignInPage() {
             </svg>
             Sign in with Google
           </Clerk.Connection>
-          <Clerk.Connection name="apple" className="bg-white rounded-full p-2 text-black w-72 flex items-center justify-center gap-2 font-bold cursor-pointer">
+          <Clerk.Connection
+            name="apple"
+            className="bg-white rounded-full p-2 text-black w-72 flex items-center justify-center gap-2 font-bold cursor-pointer"
+          >
             <svg viewBox="0 0 24 24" width={24} height={24}>
               <path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"></path>
             </svg>
@@ -53,88 +61,131 @@ export default function SignInPage() {
 
           {/* Login with credentials */}
 
-            <SignIn.Step name="start">
-              <Clerk.Field name="identifier" className='flex flex-col gap-2'>
-                <Clerk.Input placeholder='john@example.com' className='py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white '/>
-                <Clerk.FieldError className='text-red-300 text-sm ' />
+          <SignIn.Step name="start">
+            <Clerk.Field name="identifier" className="flex flex-col gap-2">
+              <Clerk.Input
+                placeholder="john@example.com"
+                className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white "
+              />
+              <Clerk.FieldError className="text-red-300 text-sm " />
+            </Clerk.Field>
+            <SignIn.Action
+              submit
+              className="mt-4 bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer"
+            >
+              Continue
+            </SignIn.Action>
+          </SignIn.Step>
+
+          <SignIn.Step name="verifications">
+            <SignIn.Strategy name="password">
+              <Clerk.Field name="password" className="flex flex-col gap-2">
+                <Clerk.Input
+                  placeholder="Password"
+                  className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white "
+                />
+                <Clerk.FieldError className="text-red-300 text-sm " />
               </Clerk.Field>
-              <SignIn.Action submit className="mt-4 bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer">
+              <div className="flex flex-col gap-2">
+                <SignIn.Action
+                  submit
+                  className="mt-4 bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer"
+                >
+                  Continue
+                </SignIn.Action>
+                <SignIn.Action
+                  navigate="forgot-password"
+                  className="mt-2 text-sm underline w-72 text-center cursor-pointer"
+                >
+                  Forgot password?
+                </SignIn.Action>
+              </div>
+            </SignIn.Strategy>
+
+            <SignIn.Strategy name="reset_password_email_code">
+              <p className="text-sm mb-2">
+                We sent a code to <SignIn.SafeIdentifier />.
+              </p>
+
+              <Clerk.Field name="code" className="flex flex-col gap-2">
+                <Clerk.Input
+                  className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white "
+                  placeholder="Verification Code"
+                />
+                <Clerk.FieldError className="text-red-300 text-sm " />
+              </Clerk.Field>
+
+              <SignIn.Action
+                submit
+                className="mt-4 bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer"
+              >
                 Continue
               </SignIn.Action>
-            </SignIn.Step>
+            </SignIn.Strategy>
+          </SignIn.Step>
 
+          <SignIn.Step
+            name="forgot-password"
+            className="flex justify-between w-72 text-sm "
+          >
+            <SignIn.SupportedStrategy name="reset_password_email_code">
+              <span className=" bg-iconBlue rounded-full px-4 py-3  text-white font-bold text-center cursor-pointer">
+                Reset password
+              </span>
+            </SignIn.SupportedStrategy>
+            <SignIn.Action
+              navigate="previous"
+              className=" bg-white rounded-full text-black font-bold w-35 h-[40px] text-center cursor-pointer"
+            >
+              Go back
+            </SignIn.Action>
+          </SignIn.Step>
 
-            <SignIn.Step name="verifications">
-               <SignIn.Strategy name="password">
-                <Clerk.Field name="password" className='flex flex-col gap-2'>
-                  <Clerk.Input placeholder='Password' className='py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white '/>
-                  <Clerk.FieldError className='text-red-300 text-sm ' />
-                </Clerk.Field>
-                <div className="flex flex-col gap-2">
-                  <SignIn.Action submit className="mt-4 bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer">
-                    Continue
-                  </SignIn.Action>
-                  <SignIn.Action navigate="forgot-password" className='mt-2 text-sm underline w-72 text-center cursor-pointer'>Forgot password?</SignIn.Action>
-                </div>
-              </SignIn.Strategy>
+          <SignIn.Step name="reset-password">
+            <h1>Reset your password</h1>
 
-              <SignIn.Strategy name="reset_password_email_code">
-                <p className='text-sm mb-2'>
-                  We sent a code to <SignIn.SafeIdentifier />.
-                </p>
+            <Clerk.Field name="password">
+              <Clerk.Input
+                className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white "
+                placeholder="New password"
+              />
+              <Clerk.FieldError className="text-red-300 text-sm " />
+            </Clerk.Field>
 
-                <Clerk.Field name="code" className='flex flex-col gap-2'>
-                  <Clerk.Input className='py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white ' placeholder='Verification Code'/>
-                  <Clerk.FieldError className='text-red-300 text-sm '/>
-                </Clerk.Field>
+            <Clerk.Field name="confirmPassword">
+              <Clerk.Input
+                className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white "
+                placeholder="Confirm password"
+              />
+              <Clerk.FieldError className="text-red-300 text-sm " />
+            </Clerk.Field>
 
-                <SignIn.Action submit className="mt-4 bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer">
-                    Continue
-                  </SignIn.Action>
-              </SignIn.Strategy>
-            </SignIn.Step>
+            <SignIn.Action
+              submit
+              className="bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer"
+            >
+              Reset Password
+            </SignIn.Action>
+          </SignIn.Step>
 
-
-            <SignIn.Step name="forgot-password" className='flex justify-between w-72 text-sm '>
-              <SignIn.SupportedStrategy name="reset_password_email_code" >
-                  <span className=" bg-iconBlue rounded-full px-4 py-3  text-white font-bold text-center cursor-pointer">
-                    Reset password
-                  </span>
-              </SignIn.SupportedStrategy>
-              <SignIn.Action navigate="previous" className=" bg-white rounded-full text-black font-bold w-35 h-[40px] text-center cursor-pointer">Go back</SignIn.Action>
-            </SignIn.Step>
-
-
-            <SignIn.Step name="reset-password">
-              <h1>Reset your password</h1>
-
-              <Clerk.Field name="password">
-                <Clerk.Input className='py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white ' placeholder='New password'/>
-                <Clerk.FieldError className='text-red-300 text-sm '/>
-              </Clerk.Field>
-
-              <Clerk.Field name="confirmPassword">
-                <Clerk.Input className='py-2 px-6 rounded-full text-black w-72 placeholder:text-sm bg-white ' placeholder='Confirm password'/>
-                <Clerk.FieldError className='text-red-300 text-sm '/>
-              </Clerk.Field>
-
-              <SignIn.Action submit className="bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center cursor-pointer">
-                Reset Password
-              </SignIn.Action>
-            </SignIn.Step>
-
-            {/* Or Sign Up */}
-            <div className="w-72 items-center gap-4 flex">
-              <div className='h-px bg-borderGray flex-grow'></div>
-              <span className='text-textGrayLight'>or</span>
-              <div className='h-px bg-borderGray flex-grow'></div>
-            </div>
-            <Link href="/sign-up" className="bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center">Create Account</Link>
-            <p className="w-72 text-xs">
-              By signing up, you agree to the <span className="text-iconBlue">Terms of Service</span> and <span className="text-iconBlue">Privacy Policy</span>,
-              including <span className="text-iconBlue">Cookie Use</span>.
-            </p>
-
+          {/* Or Sign Up */}
+          <div className="w-72 items-center gap-4 flex">
+            <div className="h-px bg-borderGray flex-grow"></div>
+            <span className="text-textGrayLight">or</span>
+            <div className="h-px bg-borderGray flex-grow"></div>
+          </div>
+          <Link
+            href="/sign-up"
+            className="bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center"
+          >
+            Create Account
+          </Link>
+          <p className="w-72 text-xs">
+            By signing up, you agree to the{' '}
+            <span className="text-iconBlue">Terms of Service</span> and{' '}
+            <span className="text-iconBlue">Privacy Policy</span>, including{' '}
+            <span className="text-iconBlue">Cookie Use</span>.
+          </p>
         </SignIn.Root>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import Link from "next/link"
+import Link from 'next/link'
 import Image from '@/components/Image'
-import Post from "@/components/Post"
-import Comments from "@/components/Comments"
+import Post from '@/components/Post'
+import Comments from '@/components/Comments'
 
 const StatusPage = () => {
   return (
@@ -13,8 +13,8 @@ const StatusPage = () => {
         </Link>
         <h1 className="font-bold text-lg">Post</h1>
       </div>
-      <Post type="status"/>
-      <Comments/>
+      <Post type="status" />
+      <Comments />
     </div>
   )
 }
