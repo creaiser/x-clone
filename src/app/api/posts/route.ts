@@ -33,6 +33,19 @@ export async function GET(request: NextRequest) {
     where: whereCondition,
     include: {
       user: { select: { displayName: true, username: true, img: true } },
+      rePost: {
+        include: {
+          user: { select: { displayName: true, username: true, img: true } },
+          _count: { select: { likes: true, rePosts: true, comments: true } },
+          likes: { where: { userId: userId }, select: { id: true } },
+          rePosts: { where: { userId: userId }, select: { id: true } },
+          saves: { where: { userId: userId }, select: { id: true } },
+        },
+      },
+      _count: { select: { likes: true, rePosts: true, comments: true } },
+      likes: { where: { userId: userId }, select: { id: true } },
+      rePosts: { where: { userId: userId }, select: { id: true } },
+      saves: { where: { userId: userId }, select: { id: true } },
     },
     take: LIMIT,
     skip: (Number(cursor) - 1) * LIMIT,

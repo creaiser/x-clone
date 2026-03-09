@@ -28,6 +28,19 @@ const Feed = async ({ userProfileId }: { userProfileId?: string }) => {
     where: whereCondition,
     include: {
       user: { select: { displayName: true, username: true, img: true } },
+      rePost: {
+        include: {
+          user: { select: { displayName: true, username: true, img: true } },
+          _count: { select: { likes: true, rePosts: true, comments: true } },
+          likes: { where: { userId: userId }, select: { id: true } },
+          rePosts: { where: { userId: userId }, select: { id: true } },
+          saves: { where: { userId: userId }, select: { id: true } },
+        },
+      },
+      _count: { select: { likes: true, rePosts: true, comments: true } },
+      likes: { where: { userId: userId }, select: { id: true } },
+      rePosts: { where: { userId: userId }, select: { id: true } },
+      saves: { where: { userId: userId }, select: { id: true } },
     },
     take: 3,
     skip: 0,
@@ -38,7 +51,6 @@ const Feed = async ({ userProfileId }: { userProfileId?: string }) => {
       {posts.map((post) => (
         <div key={post.id}>
           <Post post={post} />
-          From Server
         </div>
       ))}
       <InfiniteFeed userProfileId={userProfileId} />

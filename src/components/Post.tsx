@@ -7,10 +7,25 @@ import { format } from 'timeago.js'
 
 type PostWithDetails = PostType & {
   user: {
-    displayName: string
+    displayName: string | null
     username: string
     img: string | null
   }
+  rePost?: PostType & {
+    user: {
+      displayName: string | null
+      username: string
+      img: string | null
+    }
+    _count: { likes: number; rePosts: number; comments: number }
+    likes: { id: number }[]
+    rePosts: { id: number }[]
+    saves: { id: number }[]
+  }
+  _count: { likes: number; rePosts: number; comments: number }
+  likes: { id: number }[]
+  rePosts: { id: number }[]
+  saves: { id: number }[]
 }
 
 const Post = ({
@@ -20,6 +35,7 @@ const Post = ({
   type?: 'status' | 'comment'
   post: PostWithDetails
 }) => {
+  const originalPost = post.rePost || post
   return (
     <div className=" px-6 py-4 xxl:p-4 border-y-[1px] border-borderGray">
       {/* Post type */}
@@ -45,13 +61,16 @@ const Post = ({
         <div className="flex-1 flex flex-col gap-2">
           {/* Top */}
           <div className="w-full flex justify-between">
-            <Link href={`/${post.user.username}`} className="flex gap-4">
+            <Link
+              href={`/${originalPost.user.username}`}
+              className="flex gap-4"
+            >
               {/* Avatar */}
               <div
                 className={`${type === 'status' && 'hidden'}relative w-10 h-10 rounded-full overflow-hidden`}
               >
                 <Image
-                  path={post.user.img || '/general/noAvatarimg.png'}
+                  path={originalPost.user.img || '/general/noAvatarimg.png'}
                   alt=""
                   w={100}
                   h={100}
@@ -62,15 +81,17 @@ const Post = ({
                 <div
                   className={`flex items-center gap-2 flex-wrap ${type === 'status' && 'flex-col !gap-0 !items-start'}`}
                 >
-                  <h1 className="text-md font-bold">{post.user.displayName}</h1>
+                  <h1 className="text-md font-bold">
+                    {originalPost.user.displayName}
+                  </h1>
                   <span
                     className={`text-textGray ${type === 'status' && 'text-sm'}`}
                   >
-                    @{post.user.username}
+                    @{originalPost.user.username}
                   </span>
                   {type !== 'status' && (
                     <span className="text-textGray">
-                      {format(post.createdAt)}
+                      {format(originalPost.createdAt)}
                     </span>
                   )}
                 </div>
@@ -83,11 +104,17 @@ const Post = ({
           <div className="gap-2">
             <Link href="/creaiser/status/143">
               <p className={`mb-4 mt-2 ${type === 'status' && 'text-lg'}`}>
-                {post.desc}
+                {originalPost.desc}
               </p>
             </Link>
-            {post.img && (
-              <Image path={post.img} alt="post" w={600} h={600} tr={true} />
+            {originalPost.img && (
+              <Image
+                path={originalPost.img}
+                alt="post"
+                w={600}
+                h={600}
+                tr={true}
+              />
             )}
 
             {/* {fileDetails && fileDetails.fileType === "image" ?(
@@ -102,13 +129,18 @@ const Post = ({
              */}
             {type === 'status' && (
               <div className="my-2 text-textGray">
-                <span>{String(post.createdAt)}</span>
+                <span>{String(originalPost.createdAt)}</span>
               </div>
             )}
             <div
               className={`${type === 'status' && 'border-t-1 border-borderGray pt-1'}`}
             >
-              <PostInteraction />
+              <PostInteraction
+                count={originalPost._count}
+                isLiked={!!originalPost.likes.length}
+                isReposted={!!originalPost.rePosts.length}
+                isSaved={!!originalPost.saves.length}
+              />
             </div>
           </div>
         </div>
