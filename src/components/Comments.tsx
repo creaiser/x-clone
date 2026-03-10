@@ -1,7 +1,27 @@
 import Post from './Post'
 import Image from './Image'
+import { Post as PostType } from '@/generated/client'
+type CommentWithDetails = PostType & {
+  user: {
+    displayName: string
+    username: string
+    img: string | null
+  }
+  _count: { likes: number; rePosts: number; comments: number }
+  likes: { id: number }[]
+  rePosts: { id: number }[]
+  saves: { id: number }[]
+}
 
-const Comments = () => {
+const Comments = ({
+  comments,
+  postId,
+  username,
+}: {
+  comments: CommentWithDetails[]
+  postId: number
+  username: string
+}) => {
   return (
     <div className="">
       <form className="flex items-center justify-between gap-4 p-4">
@@ -23,7 +43,11 @@ const Comments = () => {
           Reply
         </button>
       </form>
-      <Post />
+      {comments.map((comment) => (
+        <div className="" key={comment.id}>
+          <Post post={comment} type="comment" />
+        </div>
+      ))}
     </div>
   )
 }

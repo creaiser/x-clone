@@ -102,7 +102,9 @@ const Post = ({
           </div>
           {/* Text & Media  */}
           <div className="gap-2">
-            <Link href="/creaiser/status/143">
+            <Link
+              href={`/${originalPost.user.username}/status/${originalPost.id}`}
+            >
               <p className={`mb-4 mt-2 ${type === 'status' && 'text-lg'}`}>
                 {originalPost.desc}
               </p>
@@ -129,7 +131,20 @@ const Post = ({
              */}
             {type === 'status' && (
               <div className="my-2 text-textGray">
-                <span>{String(originalPost.createdAt)}</span>
+                <span>
+                  {`${new Date(originalPost.createdAt).toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                  })}
+                   · 
+                   ${new Date(originalPost.createdAt).toLocaleString('en-US', {
+                     month: 'short',
+                     day: 'numeric',
+                     year: 'numeric',
+                   })}
+                  `}
+                </span>
               </div>
             )}
             <div
