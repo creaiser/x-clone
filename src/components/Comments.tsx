@@ -3,7 +3,7 @@ import Image from './Image'
 import { Post as PostType } from '@/generated/client'
 type CommentWithDetails = PostType & {
   user: {
-    displayName: string
+    displayName: string | null
     username: string
     img: string | null
   }

@@ -11,17 +11,19 @@ type PostWithDetails = PostType & {
     username: string
     img: string | null
   }
-  rePost?: PostType & {
-    user: {
-      displayName: string | null
-      username: string
-      img: string | null
-    }
-    _count: { likes: number; rePosts: number; comments: number }
-    likes: { id: number }[]
-    rePosts: { id: number }[]
-    saves: { id: number }[]
-  }
+  rePost?:
+    | (PostType & {
+        user: {
+          displayName: string | null
+          username: string
+          img: string | null
+        }
+        _count: { likes: number; rePosts: number; comments: number }
+        likes: { id: number }[]
+        rePosts: { id: number }[]
+        saves: { id: number }[]
+      })
+    | null
   _count: { likes: number; rePosts: number; comments: number }
   likes: { id: number }[]
   rePosts: { id: number }[]
