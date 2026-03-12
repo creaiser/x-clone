@@ -60,9 +60,9 @@ export async function POST(req: Request) {
       await prisma.user.create({
         data: {
           id: evt.data.id,
-          username: JSON.parse(body).data.username,
-          email: JSON.parse(body).data.email_addresses[0].email_address,
-          img: JSON.parse(body).image_url || '',
+          username: payload.data.username,
+          email: payload.data.email_addresses[0].email_address,
+          img: payload.data.image_url || '',
         },
       })
       return new Response('User created', { status: 200 })
@@ -76,13 +76,11 @@ export async function POST(req: Request) {
 
   if (eventType === 'user.deleted') {
     try {
-      await prisma.user.delete({ where: { id: evt.data.id } })
+      await prisma.user.deleteMany({ where: { id: evt.data.id } })
       return new Response('User deleted', { status: 200 })
     } catch (err) {
       console.log(err)
-      return new Response('Error: Failed to create a user!', {
-        status: 500,
-      })
+      return new Response('Error: Failed to delete a user!', { status: 500 })
     }
   }
 
