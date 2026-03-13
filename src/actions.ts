@@ -7,13 +7,11 @@ export const shareAction = async (
   settings: { type: 'original' | 'wide' | 'square'; sensitive: boolean },
 ): Promise<void> => {
   const file = formData.get('file') as File
-  // const desc = formData.get('desc') as string
 
   if (!file) {
     throw new Error('No file provided')
   }
 
-  // Конвертируем File в Buffer для серверной загрузки
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
 
@@ -26,7 +24,6 @@ export const shareAction = async (
   }`
 
   try {
-    // Используем серверный ImageKit SDK
     const uploadResponse = await imagekit.upload({
       file: buffer,
       fileName: file.name,
@@ -42,7 +39,6 @@ export const shareAction = async (
     })
 
     console.log('Upload success:', uploadResponse)
-    // Если нужно вернуть данные, используйте useFormState или redirect
   } catch (error) {
     console.error('Upload error:', error)
     throw error
