@@ -29,13 +29,12 @@ const Share = () => {
 
   const { user } = useUser()
 
-  if (!user) return null
-
   const [state, formAction, isPending] = useActionState(addPost, {
     success: false,
     error: false,
   })
 
+  if (!user) return null
   return (
     <form className="p-4 flex gap-4" action={formAction}>
       {/* AVATAR */}

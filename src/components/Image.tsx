@@ -1,6 +1,6 @@
 'use client'
 import { buildSrc, Image as ImageKitImage } from '@imagekit/next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const urlEndpoint = process.env.PUBLIC_IMAGEKIT_URL_ENDPOINT as string
 
@@ -13,7 +13,11 @@ type ImageType = {
   tr?: boolean
 }
 const Image = ({ path, w, h, alt, className, tr }: ImageType) => {
-  const [showPlaceholder, setShowPlaceholder] = useState(true)
+  const [showPlaceholder, setShowPlaceholder] = useState(false)
+
+  useEffect(() => {
+    setShowPlaceholder(true)
+  }, [])
   return (
     <ImageKitImage
       src={path}
