@@ -1,8 +1,7 @@
 'use client'
-import { shareAction } from '@/actions'
 import Image from '@/components/Image'
 import NextImage from 'next/image'
-import { useActionState, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import ImageEditor from './ImageEditor'
 import { auth } from '@clerk/nextjs/server'
 import { useUser } from '@clerk/nextjs'
@@ -33,6 +32,16 @@ const Share = () => {
     success: false,
     error: false,
   })
+
+  const formRef = useRef<HTMLFormElement | null>(null)
+
+  useEffect(() => {
+    if (state.success) {
+      formRef.current?.reset()
+      setMedia(null)
+      setSettings({ type: 'original', sensitive: false })
+    }
+  }, [state])
 
   if (!user) return null
   return (

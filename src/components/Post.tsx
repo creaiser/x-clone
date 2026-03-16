@@ -116,8 +116,9 @@ const Post = ({
                 path={originalPost.img}
                 alt="post"
                 w={600}
-                h={600}
+                h={originalPost.imgHeight || 600}
                 tr={true}
+                className="rounded-xl"
               />
             )}
 
