@@ -803,7 +803,7 @@ export const PostScalarFieldEnum = {
   img: 'img',
   imgHeight: 'imgHeight',
   video: 'video',
-  isSensetive: 'isSensetive',
+  isSensitive: 'isSensitive',
   userId: 'userId',
   rePostId: 'rePostId',
   parentPostId: 'parentPostId'

@@ -42,7 +42,7 @@ model Post {
   img String?
   imgHeight Int?
   video String?
-  isSensetive Boolean @default(false)
+  isSensitive Boolean @default(false)
 
   // Relations
   user    User    @relation(fields: [userId], references: [id])
