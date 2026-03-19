@@ -6,7 +6,11 @@ import { prisma } from '@/prisma'
 import { auth } from '@clerk/nextjs/server'
 import FollowButton from '@/components/FollowButton'
 
-const UserPage = async ({ params }: { params: { username: string } }) => {
+const UserPage = async ({
+  params,
+}: {
+  params: Promise<{ username: string }>
+}) => {
   const { username } = await params
   const { userId } = await auth()
   const user = await prisma.user.findUnique({
