@@ -154,10 +154,11 @@ const Post = ({
               className={`${type === 'status' && 'border-t-1 border-borderGray pt-1'}`}
             >
               <PostInteraction
+                username={originalPost.user.username}
                 postId={originalPost.id}
                 count={originalPost._count}
                 isLiked={!!originalPost.likes.length}
-                isReposted={!!originalPost.rePosts.length}
+                isRePosted={!!originalPost.rePosts.length}
                 isSaved={!!originalPost.saves.length}
               />
             </div>

@@ -1,32 +1,52 @@
 'use client'
 
 import { likePost, rePost, savePost } from '@/action'
+import { socket } from '@/socket'
+import { useUser } from '@clerk/nextjs'
+import Link from 'next/link'
 import { useOptimistic, useState } from 'react'
 
 const PostInteraction = ({
+  username,
   postId,
   count,
   isLiked,
-  isReposted,
+  isRePosted,
   isSaved,
 }: {
+  username: string
   postId: number
   count: { likes: number; rePosts: number; comments: number }
   isLiked: boolean
-  isReposted: boolean
+  isRePosted: boolean
   isSaved: boolean
 }) => {
   const [state, setState] = useState({
     likes: count.likes,
     isLiked: isLiked,
     rePosts: count.rePosts,
-    isReposted,
+    isRePosted,
     isSaved,
   })
 
+  const { user } = useUser()
+
   const likeAction = async () => {
+    if (!user) return
+
+    if (!optimisticCount.isLiked) {
+      socket.emit('sendNotification', {
+        receiverUsername: username,
+        data: {
+          senderUsername: user.username,
+          type: 'like',
+          link: `/${username}/status/${postId}`,
+        },
+      })
+    }
+
     addOptimisticCount('like')
-    likePost(postId)
+    await likePost(postId)
     setState((prev) => {
       return {
         ...prev,
@@ -37,20 +57,32 @@ const PostInteraction = ({
   }
 
   const rePostAction = async () => {
+    if (!user) return
+
+    if (!optimisticCount.isRePosted) {
+      socket.emit('sendNotification', {
+        receiverUsername: username,
+        data: {
+          senderUsername: user.username,
+          type: 'rePost',
+          link: `/${username}/status/${postId}`,
+        },
+      })
+    }
+
     addOptimisticCount('rePost')
-    rePost(postId)
+    await rePost(postId)
     setState((prev) => {
       return {
         ...prev,
-        rePosts: prev.isReposted ? prev.rePosts - 1 : prev.rePosts + 1,
-        isReposted: !prev.isReposted,
+        rePosts: prev.isRePosted ? prev.rePosts - 1 : prev.rePosts + 1,
+        isRePosted: !prev.isRePosted,
       }
     })
   }
-
   const saveAction = async () => {
     addOptimisticCount('save')
-    savePost(postId)
+    await savePost(postId)
     setState((prev) => {
       return {
         ...prev,
@@ -72,8 +104,8 @@ const PostInteraction = ({
       if (type === 'rePost') {
         return {
           ...prev,
-          rePosts: prev.isReposted ? prev.rePosts - 1 : prev.rePosts + 1,
-          isReposted: !prev.isReposted,
+          rePosts: prev.isRePosted ? prev.rePosts - 1 : prev.rePosts + 1,
+          isRePosted: !prev.isRePosted,
         }
       }
       if (type === 'save') {
@@ -85,7 +117,6 @@ const PostInteraction = ({
       return prev
     },
   )
-
   return (
     <div className="flex items-center justify-between my-2 gap-4 lg:gap-16 text-textGray">
       <div className="flex items-center justify-between flex-1">
@@ -109,7 +140,7 @@ const PostInteraction = ({
         {/* RETWEETS */}
         <form action={rePostAction}>
           <button
-            className={`${optimisticCount.isReposted ? 'fill-iconGreen text-iconGreen' : 'fill-textGray text-textGray'} group cursor-pointer flex items-center gap-2 `}
+            className={`${optimisticCount.isRePosted ? 'fill-iconGreen text-iconGreen' : 'fill-textGray text-textGray'} group cursor-pointer flex items-center gap-2 `}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

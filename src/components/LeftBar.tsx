@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from './Image'
 import Socket from './Socket'
+import Notification from './Notification'
+import { currentUser } from '@clerk/nextjs/server'
 
 const menuList = [
   {
@@ -15,12 +17,12 @@ const menuList = [
     link: '/',
     icon: 'explore.svg',
   },
-  {
-    id: 3,
-    name: 'Notification',
-    link: '/',
-    icon: 'notification.svg',
-  },
+  // {
+  //   id: 3,
+  //   name: 'Notifications',
+  //   link: '/notifications',
+  //   icon: 'notification.svg',
+  // },
   {
     id: 4,
     name: 'Messages',
@@ -65,10 +67,11 @@ const menuList = [
   },
 ]
 
-const LeftBar = () => {
+const LeftBar = async () => {
+  const user = await currentUser()
   return (
     <div
-      className="fixed top-0 border-r-[1px] border-borderGray mx-auto h-screen flex flex-col  justify-between pt-2 pb-8
+      className="fixed top-0 z-10 border-r-[1px] border-borderGray mx-auto h-screen flex flex-col  justify-between pt-2 pb-8
         w-[68px] sm:w-[89px] lg:w-[69px] xl:w-[89px] xxl:w-[277px]
         px-[4px] sm:px-[8px] lg:px-[4px] xl:px-[8px]"
     >
@@ -78,22 +81,29 @@ const LeftBar = () => {
         <Link href="/" className="py-2 px-4  rounded-full hover:bg-[#181818]">
           <Image path="/icons/logo.svg" alt="logo" w={24} h={24} />
         </Link>
-        {/* Menu list */}
+        {/* MENU LIST */}
         <div className="flex flex-col gap-4">
-          {menuList.map((item) => (
-            <Link
-              href={item.link}
-              className="py-2 px-4 rounded-full hover:bg-[#181818] flex items-center gap-4"
-              key={item.id}
-            >
-              <Image
-                path={`/icons/${item.icon}`}
-                alt={item.name}
-                w={24}
-                h={24}
-              />
-              <span className="hidden xxl:inline">{item.name}</span>
-            </Link>
+          {menuList.map((item, i) => (
+            <div key={item.id || i}>
+              {i === 2 && user && (
+                <div className="z-50">
+                  <Notification />
+                </div>
+              )}
+              <Link
+                href={item.link}
+                className="py-2 px-4 rounded-full hover:bg-[#181818] flex items-center gap-4"
+                key={item.id}
+              >
+                <Image
+                  path={`/icons/${item.icon}`}
+                  alt={item.name}
+                  w={24}
+                  h={24}
+                />
+                <span className="hidden xxl:inline">{item.name}</span>
+              </Link>{' '}
+            </div>
           ))}
         </div>
         {/* Button */}
