@@ -12,6 +12,13 @@ type NotificationType = {
   link: string
 }
 
+const typeMap: Record<string, string> = {
+  like: 'liked',
+  rePost: 're-posted',
+  comment: 'replied',
+  follow: 'followed you',
+}
+
 const Notification = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([])
   const [open, setOpen] = useState(false)
@@ -61,14 +68,7 @@ const Notification = () => {
               key={n.id}
               onClick={() => handleClick(n)}
             >
-              <b>{n.senderUsername}</b>{' '}
-              {n.type === 'like'
-                ? 'liked your post'
-                : n.type === 'rePost'
-                  ? 're-posted your post'
-                  : n.type === 'comment'
-                    ? 'replied your post'
-                    : 'followed you'}
+              <b>{n.senderUsername}</b> {typeMap[n.type] ?? 'unknown'}
             </div>
           ))}
           <button

@@ -4,9 +4,10 @@ import Post from './Post'
 import Image from './Image'
 import { Post as PostType } from '@/generated/client'
 import { useUser } from '@clerk/nextjs'
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 import { addComment } from '@/action'
 import { error } from 'console'
+import { socket } from '@/socket'
 type CommentWithDetails = PostType & {
   user: {
     displayName: string | null
@@ -34,6 +35,19 @@ const Comments = ({
     success: false,
     error: false,
   })
+
+  useEffect(() => {
+    if (state.success) {
+      socket.emit('sendNotification', {
+        receiverUsername: username,
+        data: {
+          senderUsername: user?.username,
+          type: 'comment',
+          link: `/${username}/status/${postId}`,
+        },
+      })
+    }
+  }, [state.success, username, user?.username, postId])
 
   return (
     <div className="">
