@@ -6,7 +6,6 @@ import { Post as PostType } from '@/generated/client'
 import { useUser } from '@clerk/nextjs'
 import { useActionState, useEffect } from 'react'
 import { addComment } from '@/action'
-import { error } from 'console'
 import { socket } from '@/socket'
 type CommentWithDetails = PostType & {
   user: {
